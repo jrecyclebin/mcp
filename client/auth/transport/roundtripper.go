@@ -260,6 +260,9 @@ func (r *RoundTripper) dynamicRegister(ctx context.Context, asMeta *meta.Authori
 		"token_endpoint_auth_method": "none", // public client
 		"redirect_uris":              []string{"http://localhost/callback"},
 	}
+	if scope := strings.Join(asMeta.ScopesSupported, " "); scope != "" {
+		body["scope"] = scope
+	}
 	payload, _ := json.Marshal(body)
 	req, err := http.NewRequestWithContext(ctx, "POST", regURL, bytes.NewReader(payload))
 	if err != nil {
